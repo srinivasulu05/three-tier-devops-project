@@ -1,8 +1,10 @@
 from flask import Flask, jsonify
 import pymysql
 import os
+from flask_cors import CORS   # 👈 add this
 
 app = Flask(__name__)
+CORS(app)   # 👈 add this
 
 DB_HOST = os.environ.get("DB_HOST")
 DB_USER = os.environ.get("DB_USER")
@@ -21,7 +23,6 @@ def data():
     cursor.execute("SELECT message FROM messages LIMIT 1")
     result = cursor.fetchone()
     return jsonify({"message": result[0]})
-
 
 @app.route("/health")
 def health():
