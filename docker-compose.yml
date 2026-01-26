@@ -13,6 +13,6 @@ services:
   frontend:
     image: 032068930732.dkr.ecr.eu-north-1.amazonaws.com/frontend-app:latest
     ports:
-      - "80:80"
+      - "8080:80"
     depends_on:
       - backend
