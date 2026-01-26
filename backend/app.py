@@ -18,9 +18,10 @@ def data():
         database=DB_NAME
     )
     cursor = conn.cursor()
-    cursor.execute("SELECT 'Hello from 3-Tier RDS Database!'")
+    cursor.execute("SELECT message FROM messages LIMIT 1")
     result = cursor.fetchone()
     return jsonify({"message": result[0]})
+
 
 @app.route("/health")
 def health():
