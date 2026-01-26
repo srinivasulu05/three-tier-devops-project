@@ -9,8 +9,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+    # 1. Checkout code
+    - name: Checkout code
+      uses: actions/checkout@v4
 
+    # 2. Configure AWS credentials
     - name: Configure AWS
       uses: aws-actions/configure-aws-credentials@v4
       with:
@@ -18,25 +21,39 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ secrets.AWS_REGION }}
 
+    # 3. Login to ECR
     - name: Login to ECR
       run: |
         aws ecr get-login-password --region ${{ secrets.AWS_REGION }} \
-        | docker login --username AWS --password-stdin ${{ secrets.ECR_FRONTEND_REPO }}
-        aws ecr get-login-password --region ${{ secrets.AWS_REGION }} \
         | docker login --username AWS --password-stdin ${{ secrets.ECR_BACKEND_REPO }}
+        aws ecr get-login-password --region ${{ secrets.AWS_REGION }} \
+        | docker login --username AWS --password-stdin ${{ secrets.ECR_FRONTEND_REPO }}
 
+    # 4. Build & Push Backend Image
     - name: Build & Push Backend
       run: |
         docker build -t backend ./backend
         docker tag backend:latest ${{ secrets.ECR_BACKEND_REPO }}:latest
         docker push ${{ secrets.ECR_BACKEND_REPO }}:latest
 
+    # 5. Build & Push Frontend Image
     - name: Build & Push Frontend
       run: |
         docker build -t frontend ./frontend
         docker tag frontend:latest ${{ secrets.ECR_FRONTEND_REPO }}:latest
         docker push ${{ secrets.ECR_FRONTEND_REPO }}:latest
 
+    # 6. Copy docker-compose.yml to EC2
+    - name: Copy docker-compose to EC2
+      uses: appleboy/scp-action@v0.1.7
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USER }}
+        key: ${{ secrets.EC2_SSH_KEY }}
+        source: "docker-compose.yml"
+        target: "/home/ec2-user/app"
+
+    # 7. Deploy on EC2
     - name: Deploy to EC2
       uses: appleboy/ssh-action@v1.0.3
       with:
@@ -44,7 +61,15 @@ jobs:
         username: ${{ secrets.EC2_USER }}
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
+          mkdir -p /home/ec2-user/app
+          cd /home/ec2-user/app
+
+          # Login to ECR using IAM role
+          aws ecr get-login-password --region ${{ secrets.AWS_REGION }} \
+          | docker login --username AWS --password-stdin 032068930732.dkr.ecr.eu-north-1.amazonaws.com
+
           docker pull ${{ secrets.ECR_BACKEND_REPO }}:latest
           docker pull ${{ secrets.ECR_FRONTEND_REPO }}:latest
+
           docker-compose down || true
           docker-compose up -d
