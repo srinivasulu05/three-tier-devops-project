@@ -1,4 +1,4 @@
-name: 3-Tier CI/CD Pipeline
+name: 3-Tier CI/CD Pipeline Application
 
 on:
   push:
