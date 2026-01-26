@@ -1,0 +1,18 @@
+version: "3"
+services:
+  backend:
+    image: BACKEND_ECR_URI:latest
+    ports:
+      - "5000:5000"
+    environment:
+      - DB_HOST=YOUR_RDS_ENDPOINT
+      - DB_USER=admin
+      - DB_PASSWORD=YOUR_PASSWORD
+      - DB_NAME=threetierdb
+
+  frontend:
+    image: FRONTEND_ECR_URI:latest
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
