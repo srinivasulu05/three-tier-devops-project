@@ -17,11 +17,9 @@ def data():
         password=DB_PASSWORD,
         database=DB_NAME
     )
-
     cursor = conn.cursor()
-    cursor.execute("SELECT 'Hello from RDS 3-Tier DB!'")
+    cursor.execute("SELECT 'Hello from 3-Tier RDS Database!'")
     result = cursor.fetchone()
-
     return jsonify({"message": result[0]})
 
 @app.route("/health")
