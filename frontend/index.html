@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>3 Tier DevOps App</title>
+</head>
+<body>
+  <h1>3 Tier Application - Frontend</h1>
+  <button onclick="loadData()">Load Data from Backend</button>
+  <pre id="output"></pre>
+
+  <script>
+    function loadData() {
+      fetch("http://BACKEND_IP:5000/data")
+        .then(res => res.json())
+        .then(data => {
+          document.getElementById("output").innerText = JSON.stringify(data, null, 2);
+        });
+    }
+  </script>
+</body>
+</html>
