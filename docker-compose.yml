@@ -1,17 +1,17 @@
 version: "3"
 services:
   backend:
-    image: ECR_BACKEND_REPO:latest
+    image: 032068930732.dkr.ecr.eu-north-1.amazonaws.com/backend-app:latest
     ports:
       - "5000:5000"
     environment:
-      - DB_HOST=YOUR_RDS_ENDPOINT
+      - DB_HOST=threetier-db.cjg6iyecg00m.eu-north-1.rds.amazonaws.com
       - DB_USER=admin
-      - DB_PASSWORD=YOUR_PASSWORD
+      - DB_PASSWORD=Vasu0514
       - DB_NAME=threetierdb
 
   frontend:
-    image: ECR_FRONTEND_REPO:latest
+    image: 032068930732.dkr.ecr.eu-north-1.amazonaws.com/frontend-app:latest
     ports:
       - "80:80"
     depends_on:
