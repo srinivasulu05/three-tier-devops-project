@@ -2,11 +2,11 @@ name: Hello World
 
 on:
   push:
-    branches: [GH-Actions-Practice]
+    branches: [Dev]
 
 jobs:
   greet:
-    runs-on: ubuntu-latestt
+    runs-on: ubuntu-latest
 
     steps:
       - name: Say Hello
