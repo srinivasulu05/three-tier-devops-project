@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - name: Step 1 - Checkout code
-        run: actions/checkout@v4
+        run: echo "Checking out code"
       - name: Step 2 - Pretend test cases
         run: echo "Test cases Passed"
 
