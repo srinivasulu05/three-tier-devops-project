@@ -1,0 +1,32 @@
+name: Artifact Practice
+
+on:
+  push:
+    branches: [GH-Actions-Practice]
+  workflow_dispatch:
+
+jobs:
+  artifact_upload:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Pushing to text file
+        run: echo "Hello Vishnu!" > message.txt
+      - name: Uploading to artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-file
+          path: message.txt
+  
+  download_artifact:
+    needs: artifact_upload
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: test-file
+      - name: show file contents
+        run: cat message.txt
+      
