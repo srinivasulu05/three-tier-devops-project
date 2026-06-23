@@ -19,6 +19,7 @@ jobs:
           path: message.txt
   
   download_artifact:
+    needs: artifact_upload
     runs-on: ubuntu-latest
 
     steps:
