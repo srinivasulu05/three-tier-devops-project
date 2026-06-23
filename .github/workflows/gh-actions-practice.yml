@@ -2,12 +2,21 @@ name: Hello World
 
 on:
   push:
-    branches: [Dev]
+    branches: [GH-Actions-Practice]
+  workflow_dispatch:
 
 jobs:
   greet:
+    runs-on: [ubuntu-latest]
+
+    steps:
+     - name: Say Hello
+       run: echo "hello"
+     - name: Display date
+       run: date
+  greet2:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Say Hello
-        run: echo "Hello, GitHub Actions"
+    - name: Show Who triggered this
+      run: echo "Triggered by ${{github.actor}}
