@@ -6,21 +6,19 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
+  artifact_upload:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Create a file
-        run: echo "Hello from test job" > message.txt
-
-      - name: Upload artifact
+      - name: Pushing to text file
+        run: echo "Hello Vishnu!" > message.txt
+      - name: Uploading to artifact
         uses: actions/upload-artifact@v4
         with:
           name: test-file
           path: message.txt
-
-  deploy:
-    needs: test
+  
+  download_artifact:
     runs-on: ubuntu-latest
 
     steps:
@@ -28,6 +26,6 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: test-file
-
-      - name: Show file contents
+      - name: show file contents
         run: cat message.txt
+      
