@@ -3,6 +3,7 @@ name: Hello World
 on:
   push:
     branches: [GH-Actions-Practice]
+  workflow_dispatch: 
 
 jobs:
   greet:
