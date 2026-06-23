@@ -19,4 +19,4 @@ jobs:
 
     steps:
     - name: Show Who triggered this
-      run: echo "Triggered by ${{github.actor}}
+      run: echo "Triggered by ${{github.actor}}"
