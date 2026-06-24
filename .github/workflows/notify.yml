@@ -1,0 +1,29 @@
+name: Hello
+
+on:
+ push:
+  branches: [GH-Actions-Practice]
+ workflow_dispatch:
+
+
+jobs:
+ test:
+  runs-on: ubuntu-latest
+  steps:
+   - name: Executing exit 1 command
+     run: exit 1
+
+ deploy:
+  runs-on: ubuntu-latest
+  needs: test
+  steps:
+   - name: random name
+     run: echo "Hello world"
+
+ notify:
+  runs-on: ubuntu-latest
+  needs: test
+  if: failure()
+  steps:
+   - name: notifying the team
+     run: echo "Something broke, please look into this team"
