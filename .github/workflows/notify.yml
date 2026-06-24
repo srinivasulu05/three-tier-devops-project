@@ -22,7 +22,7 @@ jobs:
 
  notify:
   runs-on: ubuntu-latest
-  needs: test
+  needs: [test, deploy]
   if: failure()
   steps:
    - name: notifying the team
