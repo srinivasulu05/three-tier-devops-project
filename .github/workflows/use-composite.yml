@@ -1,0 +1,19 @@
+name: Use Composite Action
+
+on:
+  workflow_dispatch:
+
+jobs:
+  greet:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Call our composite action
+        id: hello
+        uses: ./.github/actions/say-hello
+        with:
+          who-to-greet: Srinivas
+
+      - name: Show the greeting time
+        run: echo "We greeted at ${{ steps.hello.outputs.greeting-time }}"
