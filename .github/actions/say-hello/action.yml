@@ -1,0 +1,25 @@
+name: Say Hello Action
+description: A reusable composite action
+
+inputs:
+  who-to-greet:
+    description: Who to greet
+    required: true
+    default: World
+
+outputs:
+  greeting-time:
+    description: The time we greeted
+    value: ${{ steps.get-time.outputs.time }}
+
+runs:
+  using: composite
+  steps:
+    - name: Say hello
+      shell: bash
+      run: echo "Hello ${{ inputs.who-to-greet }}"
+
+    - name: Get time
+      id: get-time
+      shell: bash
+      run: echo "time=$(date)" >> $GITHUB_OUTPUT
